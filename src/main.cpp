@@ -1,27 +1,33 @@
 #include <SPI.h>
 #include <LoRa.h>
 
+#define ss   5   // Chip select pin for LoRa
+#define rst  14  // Reset pin for LoRa
+#define dio0 2   // Interrupt pin for LoRa
+
 #define LED_PIN 12
-#define LORA_CS 5
-#define LORA_RST 14
-#define LORA_IRQ 4
 
 void setup() {
+  // Initialize Serial Monitor
   Serial.begin(115200);
   while (!Serial);
-  
-  pinMode(LED_PIN, OUTPUT);
-  
-  // Initialize LoRa
-  if (!LoRa.begin(433E6)) {  // Set LoRa frequency (e.g., 868 MHz)
-    Serial.println("Starting LoRa failed!");
-    while (1);
+  Serial.println("LoRa Sender");
+
+  // Setup LoRa transceiver module
+  LoRa.setPins(ss, rst, dio0);
+
+  // Try to initialize LoRa
+  while (!LoRa.begin(433E6)) {
+    Serial.println(".");
+    delay(500);  // Wait and keep trying to initialize LoRa
   }
 
-  LoRa.setPins(LORA_CS, LORA_RST, LORA_IRQ);
-  
-  Serial.println("LoRa Receiver Initialized!");
+  // Set sync word to ensure you're not receiving messages from other LoRa modules
+  LoRa.setSyncWord(0xF3);
+
+  Serial.println("LoRa Initializing OK!");
 }
+
 
 void loop() {
   int packetSize = LoRa.parsePacket();
@@ -31,12 +37,14 @@ void loop() {
       received += (char)LoRa.read();
     }
     
-    if (received == "BUTTON_PRESSED") {
-      digitalWrite(LED_PIN, HIGH); // Turn on LED
-      Serial.println("Button pressed, LED ON");
+    // Read current state of the LED
+    int ledState = digitalRead(LED_PIN);
+
+    // Toggle the LED state
+    if (ledState == HIGH) {
+      digitalWrite(LED_PIN, LOW);
     } else {
-      digitalWrite(LED_PIN, LOW); // Turn off LED
-      Serial.println("Button not pressed, LED OFF");
+      digitalWrite(LED_PIN, HIGH);
     }
   }
 }
