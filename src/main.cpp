@@ -30,7 +30,6 @@ void setup() {
 
 
 void loop() {
-  Serial.println("reading...");
   int packetSize = LoRa.parsePacket();
   if (packetSize) {
     String received = "";
@@ -39,6 +38,7 @@ void loop() {
     }
     
     if (received == "BUTTON_PRESSED") {
+      Serial.println(received);
       // Read current state of the LED
       int ledState = digitalRead(LED_PIN);
 
@@ -48,8 +48,6 @@ void loop() {
       } else {
         digitalWrite(LED_PIN, HIGH);
       }
-
-      Serial.println("recieved.");
     }
   }
 }
