@@ -41,12 +41,15 @@ void loop() {
       Serial.println(received);
       // Read current state of the LED
       int ledState = digitalRead(LED_PIN);
+      Serial.println(ledState);
 
       // Toggle the LED state
       if (ledState == HIGH) {
         digitalWrite(LED_PIN, LOW);
+        Serial.println("toggle low");
       } else {
         digitalWrite(LED_PIN, HIGH);
+        Serial.println("toggle high");
       }
     }
   }
