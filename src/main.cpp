@@ -37,14 +37,16 @@ void loop() {
       received += (char)LoRa.read();
     }
     
-    // Read current state of the LED
-    int ledState = digitalRead(LED_PIN);
+    if (received == "BUTTON_PRESSED") {
+      // Read current state of the LED
+      int ledState = digitalRead(LED_PIN);
 
-    // Toggle the LED state
-    if (ledState == HIGH) {
-      digitalWrite(LED_PIN, LOW);
-    } else {
-      digitalWrite(LED_PIN, HIGH);
+      // Toggle the LED state
+      if (ledState == HIGH) {
+        digitalWrite(LED_PIN, LOW);
+      } else {
+        digitalWrite(LED_PIN, HIGH);
+      }
     }
   }
 }
