@@ -25,6 +25,9 @@ void setup() {
   // Set sync word to ensure you're not receiving messages from other LoRa modules
   LoRa.setSyncWord(0xF3);
 
+   // Set LED pin as output
+  pinMode(LED_PIN, OUTPUT);
+
   Serial.println("LoRa Initializing OK!");
 }
 
