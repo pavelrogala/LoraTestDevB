@@ -30,6 +30,7 @@ void setup() {
 
 
 void loop() {
+  Serial.println("reading...");
   int packetSize = LoRa.parsePacket();
   if (packetSize) {
     String received = "";
@@ -47,6 +48,8 @@ void loop() {
       } else {
         digitalWrite(LED_PIN, HIGH);
       }
+
+      Serial.println("recieved.");
     }
   }
 }
