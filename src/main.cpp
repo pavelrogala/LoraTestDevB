@@ -5,7 +5,7 @@
 #define rst  14  // Reset pin for LoRa
 #define dio0 2   // Interrupt pin for LoRa
 
-#define LED_PIN 12
+#define LED_PIN 13
 
 void setup() {
   // Initialize Serial Monitor
@@ -37,20 +37,16 @@ void loop() {
       received += (char)LoRa.read();
     }
     
-    if (received == "BUTTON_PRESSED") {
+    if (received == "HIGH") {
       Serial.println(received);
-      // Read current state of the LED
-      int ledState = digitalRead(LED_PIN);
-      Serial.println(ledState);
+      digitalWrite(LED_PIN, HIGH);
+      Serial.println("toggle high");
+    }
 
-      // Toggle the LED state
-      if (ledState == HIGH) {
-        digitalWrite(LED_PIN, LOW);
-        Serial.println("toggle low");
-      } else {
-        digitalWrite(LED_PIN, HIGH);
-        Serial.println("toggle high");
-      }
+    if(received == "LOW") {
+      Serial.println(received);
+      digitalWrite(LED_PIN, LOW);
+      Serial.println("toggle low");
     }
   }
 }
